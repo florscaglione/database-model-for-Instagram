@@ -8,23 +8,45 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
+class User(Base):
+    __tablename__ = 'user'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+    nick_name = Column(String(50), unique=True, nullable=False)
+    first_name = Column(String(50))
+    last_name = Column(String(50))
+    email = Column(String, unique=True, nullable=False)
+    password = Column(String, unique=False, nullable=False)
 
-class Address(Base):
-    __tablename__ = 'address'
+class Post(Base):
+    __tablename__ = 'post'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    photo = Column(String, nullable=False)
+    text = Column(String(350))
+    user_id = Column(Integer, ForeignKey('user.id')) #estas 2 últimas líneas son obligatorias para hacer las relaciones
+    user = relationship(User) #esto es realmente necesario?xq me había salido el diagrama sin esto...
+
+class comment(Base):
+    __tablename__ = 'comment'
+    id = Column(Integer, primary_key=True)
+    message = Column(String(300))
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+    post_id = Column(Integer, ForeignKey('post.id'))
+    post = relationship(Post)
+
+class direct_message(Base):
+    __tablename__ = 'direct_message'
+    id = Column(Integer, primary_key=True)
+    sender_nickname = Column(String)
+    recibed_nickname = Column(String)
+    message = Column(String(300))
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+
 
     def to_dict(self):
         return {}
