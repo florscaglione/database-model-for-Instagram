@@ -27,16 +27,16 @@ class Post(Base):
     photo = Column(String, nullable=False)
     text = Column(String(350))
     user_id = Column(Integer, ForeignKey('user.id')) #estas 2 últimas líneas son obligatorias para hacer las relaciones
-    user = relationship(User)
+    user = relationship('User')
 
 class comment(Base):
     __tablename__ = 'comment'
     id = Column(Integer, primary_key=True)
     message = Column(String(300))
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship(User)
+    user = relationship('User')
     post_id = Column(Integer, ForeignKey('post.id'))
-    post = relationship(Post)
+    post = relationship('Post')
 
 class direct_message(Base):
     __tablename__ = 'direct_message'
@@ -44,7 +44,7 @@ class direct_message(Base):
     sender_id = Column(String, ForeignKey('user.id'))
     recibed_id = Column(String, ForeignKey('user.id'))
     message = Column(String(300))
-    user = relationship(User)
+    user = relationship('User')
 
 
     def to_dict(self):
