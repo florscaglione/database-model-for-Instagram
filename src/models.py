@@ -27,7 +27,7 @@ class Post(Base):
     photo = Column(String, nullable=False)
     text = Column(String(350))
     user_id = Column(Integer, ForeignKey('user.id')) #estas 2 últimas líneas son obligatorias para hacer las relaciones
-    user = relationship(User) #esto es realmente necesario?xq me había salido el diagrama sin esto...
+    user = relationship(User)
 
 class comment(Base):
     __tablename__ = 'comment'
@@ -41,10 +41,9 @@ class comment(Base):
 class direct_message(Base):
     __tablename__ = 'direct_message'
     id = Column(Integer, primary_key=True)
-    sender_nickname = Column(String)
-    recibed_nickname = Column(String)
+    sender_id = Column(String, ForeignKey('user.id'))
+    recibed_id = Column(String, ForeignKey('user.id'))
     message = Column(String(300))
-    user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
 
